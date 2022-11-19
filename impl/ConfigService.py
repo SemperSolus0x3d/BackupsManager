@@ -1,7 +1,8 @@
 import toml
-from Params import Params
-from Config import Config
-from Path import Path
+import inject
+from .Params import Params
+from .Config import Config
+from .Path import Path
 
 
 class ConfigService:
@@ -9,6 +10,7 @@ class ConfigService:
     def config(self):
         return self._config
 
+    @inject.autoparams()
     def __init__(self, params: Params):
         rawConfig = self._readRawConfig(params.configPath)
         self._config = self._createConfig(rawConfig)
@@ -33,6 +35,8 @@ class ConfigService:
             includePaths=includePaths,
             repositoryPassword=rawConfig['repositoryPassword'],
             usbRepositoryPassword=rawConfig['usbRepositoryPassword'],
+            repositoryPath=Path(rawConfig['repositoryPath']),
+            usbRepositoryPath=Path(rawConfig['usbRepositoryPath'])
         )
 
     def _toPaths(self, componentsLists: list[list[str]], placeholders: dict[str, str]):

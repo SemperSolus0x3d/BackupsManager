@@ -1,7 +1,7 @@
 import sys
 import logging as log
 
-from Params import Params
+from .Params import Params
 
 class ParamsService:
     def __init__(self):

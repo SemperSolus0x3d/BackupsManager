@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Path import Path
+from .Path import Path
 
 @dataclass
 class Config:

@@ -1,9 +1,9 @@
 import inject
 
-from Params import Params
-from ParamsService import ParamsService
-from Config import Config
-from ConfigService import ConfigService
+from .Params import Params
+from .ParamsService import ParamsService
+from .Config import Config
+from .ConfigService import ConfigService
 
 class DIConfigurer:
     def configure(self):
