@@ -1,0 +1,19 @@
+excludes = [
+    ['{home}', 'exclude', 'path']
+]
+
+# case-insensitive excludes
+iexcludes = []
+
+includePatterns = []
+includePaths = []
+
+repositoryPath = []
+usbRepositoryPath = []
+
+repositoryPassword = 'restic'
+usbRepositoryPassword = 'restic'
+
+[placeholders]
+home = '/home/username'
+driveC = 'C:'
