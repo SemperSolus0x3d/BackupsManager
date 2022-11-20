@@ -1,9 +1,10 @@
 import inject
 
-from .DIConfigurer import DIConfigurer
-from .LoggingConfigurer import LoggingConfigurer
+from .DIConfigurer import DIConfigurer as _DIConfigurer
+from .LoggingConfigurer import LoggingConfigurer as _LoggingConfigurer
 
 from .BackupService import BackupService
+from .RepoIntegrityCheckService import RepoIntegrityCheckService
 
-DIConfigurer().configure()
-inject.instance(LoggingConfigurer).configure()
+_DIConfigurer().configure()
+inject.instance(_LoggingConfigurer).configure()

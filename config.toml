@@ -8,11 +8,13 @@ iexcludes = []
 includePatterns = []
 includePaths = []
 
-repositoryPath = []
+repositoryPath = ['path', 'to', 'repo']
 usbRepositoryPath = []
 
 repositoryPassword = 'restic'
 usbRepositoryPassword = 'restic'
+
+resticPath = []
 
 [placeholders]
 home = '/home/username'

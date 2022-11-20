@@ -1,4 +1,5 @@
 import inject
 from impl import BackupService
 
-inject.instance(BackupService).makeBackup()
+if __name__ == '__main__':
+    inject.instance(BackupService).makeBackup()

@@ -16,3 +16,5 @@ class Config:
 
     repositoryPath: Path
     usbRepositoryPath: Path
+
+    resticPath: Path | None

@@ -6,6 +6,8 @@ import logging as log
 
 from .Config import Config
 from .Path import Path
+from .ResticDiscoveryService import ResticDiscoveryService
+from .RepoPasswordService import RepoPasswordService
 
 class BackupService:
     _EXCLUDES_FILE_NAME = 'excludes.txt'
@@ -15,18 +17,30 @@ class BackupService:
     _PASSWORD_FILE_NAME = 'password.txt'
 
     @inject.autoparams()
-    def __init__(self, config: Config):
+    def __init__(
+        self,
+        config: Config,
+        resticDiscoveryService: ResticDiscoveryService,
+        repoPasswordService: RepoPasswordService
+    ):
         self._config = config
+        self._resticDiscoveryService = resticDiscoveryService
+        self._passwordService = repoPasswordService
 
     def makeBackup(self):
-        self._setPassword()
+        self._passwordService.passRepoPassword()
+        self._makeBackup(self._config.repositoryPath)
 
+    def makeBackupToUsbRepo(self):
+        self._passwordService.passUsbRepoPassword()
+        self._makeBackup(self._config.usbRepositoryPath)
+
+
+    def _makeBackup(self, repoPath: Path):
         with tempfile.TemporaryDirectory() as tempDir:
             self._writeFiles(tempDir)
-            self._runRestic(tempDir)
+            self._runRestic(tempDir, repoPath)
 
-    def _setPassword(self):
-        os.environ['RESTIC_PASSWORD'] = self._config.repositoryPassword
 
     def _writeFiles(self, tempDirPath: str):
         def makePath(filename: str):
@@ -50,13 +64,16 @@ class BackupService:
             file.writelines(x + lineSep for x in lines)
 
 
-    def _runRestic(self, tempDirPath: str):
+    def _runRestic(self, tempDirPath: str, repoPath: Path | None = None):
         def makePath(filename: str):
             return os.path.join(tempDirPath, filename)
 
+        if repoPath is None:
+            repoPath = self._config.repositoryPath
+
         subprocess.run([
-            'restic',
-            '-r', self._config.repositoryPath.path, # repo path
+            self._resticDiscoveryService.getResticPath(),
+            '-r', repoPath,
             '--exclude-file', makePath(self._EXCLUDES_FILE_NAME), # excludes file path
             '--iexclude-file', makePath(self._IEXCLUDES_FILE_NAME), # case-insensitive excludes file path
             '--files-from', makePath(self._INCLUDE_PATTERNS_FILE_NAME), # include patterns file path
