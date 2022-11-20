@@ -9,9 +9,11 @@ class RepoPasswordService:
         self._config = config
 
     def passRepoPassword(self):
+        """Passes repository password to restic via environment variable"""
         self._setPasswordInEnvironment(self.getRepoPassword())
 
     def passUsbRepoPassword(self):
+        """Passes USB drive repository password to restic via environment variable"""
         self._setPasswordInEnvironment(self.getUsbRepoPassword())
 
     def getRepoPassword(self):
