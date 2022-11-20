@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "RunCurrentFile",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "-l", "debug",
+                "-c", "test-config.toml"
+            ]
+        }
+    ]
+}
