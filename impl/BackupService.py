@@ -3,6 +3,7 @@ import tempfile
 import subprocess
 import inject
 import logging as log
+from typing import Union
 
 from .Config import Config
 from .Path import Path
@@ -64,7 +65,7 @@ class BackupService:
             file.writelines(x + lineSep for x in lines)
 
 
-    def _runRestic(self, tempDirPath: str, repoPath: Path | None = None):
+    def _runRestic(self, tempDirPath: str, repoPath: Union[Path, None] = None):
         def makePath(filename: str):
             return os.path.join(tempDirPath, filename)
 

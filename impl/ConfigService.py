@@ -1,5 +1,6 @@
 import toml
 import inject
+from typing import Union
 from .Params import Params
 from .Config import Config
 from .Path import Path
@@ -58,7 +59,7 @@ class ConfigService:
             self,
             components: list[str],
             placeholders: dict[str, str]
-        ) -> Path | None:
+        ) -> Union[Path, None]:
         if len(components) == 0:
             return None
 

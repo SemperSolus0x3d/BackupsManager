@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Union
 from .Path import Path
 
 @dataclass
@@ -17,4 +18,4 @@ class Config:
     repositoryPath: Path
     usbRepositoryPath: Path
 
-    resticPath: Path | None
+    resticPath: Union[Path, None]

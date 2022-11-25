@@ -1,8 +1,8 @@
 import os
-from typing import Iterable
+from typing import Iterable, Union
 
 class Path:
-    def __init__(self, path: str | Iterable[str]):
+    def __init__(self, path: Union[str, Iterable[str]]):
         if isinstance(path, str):
             self._path = path
         else:

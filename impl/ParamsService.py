@@ -19,11 +19,10 @@ class ParamsService:
         result = Params()
 
         for p, v in pairwise(sys.argv[1:]):
-            match p:
-                case '-c' | '--config':
-                    result.configPath = v
-                case '-l' | '--log-level':
-                    result.logLevel = self._getLogLevel(v)
+            if p in ('-c', '--config'):
+                result.configPath = v
+            elif p in ('-l', '--log-level'):
+                result.logLevel = self._getLogLevel(v)
 
         self._params = result
 
