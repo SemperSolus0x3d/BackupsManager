@@ -1,16 +1,16 @@
 import os
+import re
+import platform
 from typing import Iterable, Union
 
 class Path:
-    def __init__(self, path: Union[str, Iterable[str]]):
-        if isinstance(path, str):
-            self._path = path
+    _DRIVE_LETTER_REGEX = re.compile('[A-Za-z]:')
+
+    def __init__(self, pathOrComponents: Union[str, Iterable[str]]):
+        if isinstance(pathOrComponents, str):
+            self._path = pathOrComponents
         else:
-            components = (*path,)
-            if len(components) != 0:
-                self._path = os.path.join(*components)
-            else:
-                self._path = ''
+            self._path = self._join(list(pathOrComponents))
 
     @property
     def path(self):
@@ -18,3 +18,13 @@ class Path:
 
     def __str__(self):
         return self.path
+
+    def _join(self, components: list[str]):
+        if len(components) == 0:
+            return ''
+
+        if platform.system() == 'Windows':
+            if self._DRIVE_LETTER_REGEX.fullmatch(components[0]) is not None:
+                components[0] += os.sep
+
+        return os.path.join(*components)
