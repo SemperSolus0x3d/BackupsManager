@@ -8,7 +8,7 @@ from .RepoIntegrityCheckService import RepoIntegrityCheckService
 from .CopySnapshotsService import CopySnapshotsService
 from .SingleInstanceLockService import SingleInstanceLockService
 
-from .LockAcquireFailedException import LockAcquireFailedException
+from .exceptions import *
 
 _DIConfigurer().configure()
 inject.instance(_LoggingConfigurer).configure()

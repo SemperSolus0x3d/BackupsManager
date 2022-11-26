@@ -1,11 +1,10 @@
 import inject
-import subprocess
 import os
 import logging as log
 
 from .Config import Config
 from .Path import Path
-from .ResticDiscoveryService import ResticDiscoveryService
+from .ResticCallService import ResticCallService
 from .RepoPasswordService import RepoPasswordService
 
 class RepoIntegrityCheckService:
@@ -13,11 +12,11 @@ class RepoIntegrityCheckService:
     def __init__(
         self,
         config: Config,
-        resticDiscoveryService: ResticDiscoveryService,
+        resticCallService: ResticCallService,
         repoPasswordService: RepoPasswordService
     ) -> None:
         self._config = config
-        self._resticDiscoveryService = resticDiscoveryService
+        self._resticCallService = resticCallService
         self._passwordService = repoPasswordService
 
     def checkRepoIntegrity(self):
@@ -51,8 +50,7 @@ class RepoIntegrityCheckService:
             log.warning(f'USB drive repository not found. Path: "{usbRepoPath}"')
 
     def _runRestic(self, repoPath: Path):
-        subprocess.run([
-            self._resticDiscoveryService.getResticPath(),
+        self._resticCallService.callRestic([
             '-r', repoPath.path,
             'check'
         ])

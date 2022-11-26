@@ -1,9 +1,8 @@
 import inject
-import subprocess
 
 from .Config import Config
 from .Path import Path
-from .ResticDiscoveryService import ResticDiscoveryService
+from .ResticCallService import ResticCallService
 from .RepoPasswordService import RepoPasswordService
 
 class CopySnapshotsService:
@@ -11,11 +10,11 @@ class CopySnapshotsService:
     def __init__(
         self,
         config: Config,
-        resticDiscoveryService: ResticDiscoveryService,
+        resticCallService: ResticCallService,
         repoPasswordService: RepoPasswordService
     ):
         self._config = config
-        self._resticDiscoveryService = resticDiscoveryService
+        self._resticCallService = resticCallService
         self._passwordService = repoPasswordService
 
     def copySnapshotsToUsbRepo(self):
@@ -41,8 +40,7 @@ class CopySnapshotsService:
         fromRepoPath: Path,
         toRepoPath: Path
     ):
-        subprocess.run([
-            self._resticDiscoveryService.getResticPath(),
+        self._resticCallService.callRestic([
             '-r', toRepoPath.path,
             '--from-repo', fromRepoPath.path,
             'copy'

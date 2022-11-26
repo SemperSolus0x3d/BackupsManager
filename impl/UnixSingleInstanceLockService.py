@@ -1,7 +1,7 @@
 import fcntl
 import os
 import logging as log
-from .LockAcquireFailedException import LockAcquireFailedException
+from .exceptions import LockAcquireFailedException
 from .SingleInstanceLockService import SingleInstanceLockService
 
 class UnixSingleInstanceLockService(SingleInstanceLockService):
@@ -24,16 +24,9 @@ class UnixSingleInstanceLockService(SingleInstanceLockService):
         except BlockingIOError:
             raise LockAcquireFailedException()
 
-        self._isLockAcquired = True
-
     def _releaseLock(self):
-        if not self._isLockAcquired:
-            log.warning('Attempted to release lock, which was not acquired')
-            return
-
         fcntl.flock(self._file, fcntl.LOCK_UN)
         self._file.close()
-        self._isLockAcquired = False
 
     def _ensureLocksFolderExists(self):
         if not os.path.isdir(self._LOCK_FOLDER):

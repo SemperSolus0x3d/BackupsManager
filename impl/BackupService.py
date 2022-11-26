@@ -1,13 +1,12 @@
 import os
 import tempfile
-import subprocess
 import inject
 import logging as log
 from typing import Union
 
 from .Config import Config
 from .Path import Path
-from .ResticDiscoveryService import ResticDiscoveryService
+from .ResticCallService import ResticCallService
 from .RepoPasswordService import RepoPasswordService
 
 class BackupService:
@@ -21,11 +20,11 @@ class BackupService:
     def __init__(
         self,
         config: Config,
-        resticDiscoveryService: ResticDiscoveryService,
+        resticCallService: ResticCallService,
         repoPasswordService: RepoPasswordService
     ):
         self._config = config
-        self._resticDiscoveryService = resticDiscoveryService
+        self._resticCallService = resticCallService
         self._passwordService = repoPasswordService
 
     def makeBackup(self):
@@ -72,9 +71,8 @@ class BackupService:
         if repoPath is None:
             repoPath = self._config.repositoryPath
 
-        subprocess.run([
-            self._resticDiscoveryService.getResticPath(),
-            '-r', repoPath,
+        self._resticCallService.callRestic([
+            '-r', repoPath.path,
             '--exclude-file', makePath(self._EXCLUDES_FILE_NAME), # excludes file path
             '--iexclude-file', makePath(self._IEXCLUDES_FILE_NAME), # case-insensitive excludes file path
             '--files-from', makePath(self._INCLUDE_PATTERNS_FILE_NAME), # include patterns file path

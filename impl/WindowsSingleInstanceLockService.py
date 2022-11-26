@@ -1,6 +1,6 @@
 import ctypes
 import logging as log
-from .LockAcquireFailedException import LockAcquireFailedException
+from .exceptions import LockAcquireFailedException
 from .SingleInstanceLockService import SingleInstanceLockService
 
 class _Constants:
@@ -47,12 +47,5 @@ class WindowsSingleInstanceLockService(SingleInstanceLockService):
         if lastError != _Constants.ERROR_SUCCESS:
             raise ctypes.WinError(lastError)
 
-        self._isLockAcquired = True
-
     def _releaseLock(self):
-        if not self._isLockAcquired:
-            log.warning('Attempted to release lock, which was not acquired')
-            return
-
         ctypes.windll.Kernel32.CloseHandle(self._pipeHandle)
-        self._isLockAcquired = False

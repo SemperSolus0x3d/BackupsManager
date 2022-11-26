@@ -3,22 +3,24 @@ from contextlib import contextmanager
 class SingleInstanceLockService:
     @property
     def isLockAcquired(self):
-        return self._isLockAcquired
+        return self._locksCount != 0
 
     def __init__(self):
-        self._isLockAcquired = False
+        self._locksCount = 0
 
     @contextmanager
     def lock(self):
-        isLockAcquired = self._isLockAcquired
-
-        if not isLockAcquired:
+        if self._locksCount == 0:
             self._acquireLock()
+
+        self._locksCount += 1
 
         try:
             yield
         finally:
-            if not isLockAcquired:
+            self._locksCount -= 1
+
+            if self._locksCount == 0:
                 self._releaseLock()
 
     def _acquireLock(self):
