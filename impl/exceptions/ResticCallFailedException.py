@@ -1,3 +1,3 @@
 class ResticCallFailedException(Exception):
-    def __init__(self):
-        super().__init__('Restic call failed')
+    def __init__(self, stderr: str):
+        super().__init__(f'Restic call failed. Error: {stderr}')

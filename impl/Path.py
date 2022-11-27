@@ -19,6 +19,9 @@ class Path:
     def __str__(self):
         return self.path
 
+    def __repr__(self):
+        return f'Path({self._path})'
+
     def _join(self, components: list[str]):
         if len(components) == 0:
             return ''
