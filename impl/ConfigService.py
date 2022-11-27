@@ -56,6 +56,9 @@ class ConfigService:
 
             resticPath=toPathOrNone(rawConfig['resticPath']),
 
+            repoMountpoint=toPath(rawConfig['repoMountpoint']),
+            usbRepoMountpoint=toPath(rawConfig['usbRepoMountpoint']),
+
             keepHourlySnapshots=keepSettings['hourly'],
             keepDailySnapshots=keepSettings['daily'],
             keepWeeklySnapshots=keepSettings['weekly'],

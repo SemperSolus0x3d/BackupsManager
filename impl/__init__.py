@@ -9,6 +9,7 @@ from .CopySnapshotsService import CopySnapshotsService
 from .SingleInstanceLockService import SingleInstanceLockService
 from .RemoveSnapshotsService import RemoveSnapshotsService
 from .TopLevelExceptionHandler import TopLevelExceptionHandler
+from .MountService import MountService
 
 from .exceptions import *
 

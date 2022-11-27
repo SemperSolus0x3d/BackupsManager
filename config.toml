@@ -16,6 +16,9 @@ usbRepositoryPassword = 'restic'
 
 resticPath = []
 
+repoMountpoint = []
+usbRepoMountpoint = []
+
 # How many snapshots to keep
 [keepSnapshots]
 hourly = 1

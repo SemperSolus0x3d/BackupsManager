@@ -20,6 +20,9 @@ class Config:
 
     resticPath: Union[Path, None]
 
+    repoMountpoint: Path
+    usbRepoMountpoint: Path
+
     keepHourlySnapshots: int
     keepDailySnapshots: int
     keepWeeklySnapshots: int
