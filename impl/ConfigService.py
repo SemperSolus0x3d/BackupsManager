@@ -1,5 +1,7 @@
 import toml
 import inject
+import logging as log
+from pprint import pformat
 from typing import Union
 from .Params import Params
 from .Config import Config
@@ -18,7 +20,9 @@ class ConfigService:
 
 
     def _readRawConfig(self, configPath):
-        return toml.load(configPath)
+        rawConfig = toml.load(configPath)
+        log.trace(f'Raw config:\n{pformat(rawConfig)}')
+        return rawConfig
 
 
     def _createConfig(self, rawConfig):
@@ -35,17 +39,32 @@ class ConfigService:
         includePatterns = self._toPaths(rawConfig['includePatterns'], placeholders)
         includePaths = self._toPaths(rawConfig['includePaths'], placeholders)
 
-        return Config(
+        keepSettings = rawConfig['keepSnapshots']
+
+        config = Config(
             excludes=excludes,
             iexcludes=iexcludes,
+
             includePatterns=includePatterns,
             includePaths=includePaths,
+
             repositoryPassword=rawConfig['repositoryPassword'],
             usbRepositoryPassword=rawConfig['usbRepositoryPassword'],
+
             repositoryPath=toPath(rawConfig['repositoryPath']),
             usbRepositoryPath=toPath(rawConfig['usbRepositoryPath']),
-            resticPath=toPathOrNone(rawConfig['resticPath'])
+
+            resticPath=toPathOrNone(rawConfig['resticPath']),
+
+            keepHourlySnapshots=keepSettings['hourly'],
+            keepDailySnapshots=keepSettings['daily'],
+            keepWeeklySnapshots=keepSettings['weekly'],
+            keepMonthlySnapshots=keepSettings['monthly'],
+            keepYearlySnapshots=keepSettings['yearly']
         )
+
+        log.trace(f'Config:\n{pformat(config)}')
+        return config
 
     def _toPaths(self, componentsLists: list[list[str]], placeholders: dict[str, str]):
         paths = []

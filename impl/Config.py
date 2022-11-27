@@ -6,9 +6,9 @@ from .Path import Path
 class Config:
     excludes: list[Path]
 
-    # case-insensitive includes
+    # case-insensitive excludes
     iexcludes: list[Path]
-    
+
     includePatterns: list[Path]
     includePaths: list[Path]
 
@@ -19,3 +19,9 @@ class Config:
     usbRepositoryPath: Path
 
     resticPath: Union[Path, None]
+
+    keepHourlySnapshots: int
+    keepDailySnapshots: int
+    keepWeeklySnapshots: int
+    keepMonthlySnapshots: int
+    keepYearlySnapshots: int

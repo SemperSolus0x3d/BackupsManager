@@ -16,6 +16,14 @@ usbRepositoryPassword = 'restic'
 
 resticPath = []
 
+# How many snapshots to keep
+[keepSnapshots]
+hourly = 1
+daily = 1
+weekly = 1
+monthly = 1
+yearly = 1
+
 [placeholders]
 home = '/home/username'
 driveC = 'C:'

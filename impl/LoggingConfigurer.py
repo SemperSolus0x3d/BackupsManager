@@ -1,18 +1,30 @@
 import inject
 import sys
 import logging as log
+from typing import Union
 
 from .Params import Params
 
-class LoggingConfigurer:
-    @inject.autoparams()
-    def __init__(self, params: Params):
-        self._params = params
+def _logTraceGlobal(msg, *args, **kwargs):
+    log.getLogger().trace(msg, *args, **kwargs)
 
-    def configure(self):
+def _logTrace(self, msg, *args, **kwargs):
+    self.log(log.TRACE, msg, *args, **kwargs)
+
+
+class LoggingConfigurer:
+    def preconfigure(self):
+        setattr(log, 'TRACE', log.DEBUG - 1)
+        setattr(log.getLoggerClass(), 'trace', _logTrace)
+        setattr(log, 'trace', _logTraceGlobal)
+
+        log.addLevelName(log.TRACE, 'TRACE')
+
+    @inject.autoparams()
+    def configure(self, params: Params):
         log.basicConfig(
             format='{asctime} [{levelname}]: {message}',
             style='{',
-            level=self._params.logLevel,
+            level=params.logLevel,
             stream=sys.stderr
         )

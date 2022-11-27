@@ -11,6 +11,18 @@
                 "-l", "debug",
                 "-c", "test-config.toml"
             ]
+        },
+        {
+            "name": "TraceCurrentFile",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": [
+                "-l", "trace",
+                "-c", "test-config.toml"
+            ]
         }
     ]
 }

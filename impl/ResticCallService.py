@@ -1,5 +1,6 @@
 import inject
-import subprocess
+import sys
+import subprocess as sp
 
 from .ResticDiscoveryService import ResticDiscoveryService
 from .SingleInstanceLockService import SingleInstanceLockService
@@ -17,11 +18,14 @@ class ResticCallService:
 
     def callRestic(self, args: list[str]):
         with self._lockService.lock():
-            result: subprocess.CompletedProcess[str] = subprocess.run([
-                self._resticDiscoveryService.resticPath, *args
-            ])
+            process = sp.Popen(
+                [ self._resticDiscoveryService.resticPath, *args ],
+                stdout=sys.stdout,
+                stderr=sp.PIPE
+            )
 
-        try:
-            result.check_returncode()
-        except subprocess.CalledProcessError as ex:
-            raise ResticCallFailedException() from ex
+            returncode = process.wait()
+
+            if returncode != 0:
+                stderr = process.stderr.read().decode("utf-8")
+                raise ResticCallFailedException(stderr)

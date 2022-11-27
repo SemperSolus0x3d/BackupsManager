@@ -28,6 +28,7 @@ class ParamsService:
 
     def _getLogLevel(self, level_name: str):
         nameToLevelMap = { k.casefold(): v for k, v in {
+            'trace': log.TRACE,
             'debug': log.DEBUG,
             'info': log.INFO,
             'warning': log.WARNING,

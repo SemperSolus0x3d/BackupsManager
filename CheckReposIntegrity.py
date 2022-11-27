@@ -1,6 +1,7 @@
 import inject
 
-from impl import RepoIntegrityCheckService
+from impl import RepoIntegrityCheckService, TopLevelExceptionHandler
 
 if __name__ == '__main__':
-    inject.instance(RepoIntegrityCheckService).checkAllReposIntegrity()
+    with inject.instance(TopLevelExceptionHandler).handleExceptions():
+        inject.instance(RepoIntegrityCheckService).checkAllReposIntegrity()

@@ -1,5 +1,6 @@
 import inject
-from impl import CopySnapshotsService
+from impl import CopySnapshotsService, TopLevelExceptionHandler
 
 if __name__ == '__main__':
-    inject.instance(CopySnapshotsService).copySnapshotsFromUsbRepo()
+    with inject.instance(TopLevelExceptionHandler).handleExceptions():
+        inject.instance(CopySnapshotsService).copySnapshotsFromUsbRepo()

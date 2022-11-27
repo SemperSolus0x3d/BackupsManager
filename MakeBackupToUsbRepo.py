@@ -1,5 +1,6 @@
 import inject
-from impl import BackupService
+from impl import BackupService, TopLevelExceptionHandler
 
 if __name__ == '__main__':
-    inject.instance(BackupService).makeBackupToUsbRepo()
+    with inject.instance(TopLevelExceptionHandler).handleExceptions():
+        inject.instance(BackupService).makeBackupToUsbRepo()
