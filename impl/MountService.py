@@ -22,7 +22,7 @@ class MountService:
     def mountRepo(self):
         self._checkPlatform()
         self._passwordService.passRepoPassword()
-        self.mountRepo(
+        self._mount(
             self._config.repositoryPath,
             self._config.repoMountpoint
         )
@@ -30,7 +30,7 @@ class MountService:
     def mountUsbRepo(self):
         self._checkPlatform()
         self._passwordService.passUsbRepoPassword()
-        self.mountRepo(
+        self._mount(
             self._config.usbRepositoryPath,
             self._config.usbRepoMountpoint
         )
