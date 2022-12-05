@@ -9,4 +9,5 @@ class TopLevelExceptionHandler:
             yield
         except Exception as ex:
             log.critical(ex)
-            log.debug(''.join(traceback.format_exception(ex)))
+            log.debug(''.join(traceback.format_exc()))
+            exit(-1)
